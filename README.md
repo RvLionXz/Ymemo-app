@@ -1,16 +1,34 @@
-# ymemo_app
+# YMemo
 
-A new Flutter project.
+YMemo adalah aplikasi catatan yang dibuat dengan menggunakan Flutter. Aplikasi ini memungkinkan pengguna untuk membuat, mengedit, dan menyimpan catatan pribadi mereka secara mudah dan efisien. Dengan tampilan yang sederhana dan intuitif, YMemo membantu pengguna dalam mengelola catatan sehari-hari dengan cepat.
 
-## Getting Started
+## Fitur Utama
 
-This project is a starting point for a Flutter application.
+- **Membuat Catatan Baru**: Pengguna dapat dengan mudah membuat catatan baru.
+- **Mengedit Catatan**: Pengguna dapat mengedit catatan yang sudah ada.
+- **Menyimpan Catatan**: Catatan yang dibuat dapat disimpan secara lokal di perangkat pengguna.
 
-A few resources to get you started if this is your first Flutter project:
+## Teknologi yang Digunakan
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Flutter**: Framework yang digunakan untuk membangun aplikasi.
+- **Dart**: Bahasa pemrograman yang digunakan dalam pengembangan aplikasi.
+- **SQFLite**: Basis data lokal untuk menyimpan catatan.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Instalasi
+
+Untuk memulai dengan YMemo, Anda dapat mengikuti langkah-langkah berikut:
+
+### Persyaratan
+
+- **Flutter**: Pastikan Anda sudah menginstal Flutter di sistem Anda. Jika belum, ikuti petunjuk instalasi resmi di [Flutter Install](https://flutter.dev/docs/get-started/install).
+- **Android Studio**: Gunakan Android Studio atau editor lain yang mendukung Flutter untuk menjalankan aplikasi.
+
+### Langkah-langkah Instalasi
+
+1. **Clone Repository**
+
+   Pertama, clone repository YMemo ke komputer Anda:
+
+   ```bash
+   git clone https://github.com/RvLionXz/Ymemo-app
+   cd YMemo
