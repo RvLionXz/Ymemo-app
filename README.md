@@ -12,7 +12,6 @@ YMemo adalah aplikasi catatan yang dibuat dengan menggunakan Flutter. Aplikasi i
 
 - **Flutter**: Framework yang digunakan untuk membangun aplikasi.
 - **Dart**: Bahasa pemrograman yang digunakan dalam pengembangan aplikasi.
-- **SQFLite**: Basis data lokal untuk menyimpan catatan.
 
 ## Instalasi
 
