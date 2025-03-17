@@ -4,31 +4,94 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _homeScreen createState() => _homeScreen();
 }
 
 // ignore: camel_case_types
 class _homeScreen extends State<HomeScreen> {
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("YMemo", style: TextStyle(fontWeight: FontWeight.bold)),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(10),
+      body: SafeArea(
         child: Column(
           children: [
-            //Search Bar
-            TextField(
-              decoration: InputDecoration(
-                hintText: "Search Notes",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
+            Stack(
+              children: [
+                Container(
+                  height: 140,
+                  width: double.infinity,
+                  color: Colors.blueAccent,
                 ),
-                prefixIcon: Icon(Icons.search)
-              ),
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 15),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Hello User",
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                                Text(
+                                  "Apa yang ingin anda tulis hari ini??",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.right,
+                                ),
+                              ],
+                            ),
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: Icon(
+                                Icons.info,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        height: 60,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: "Search Notes",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            prefixIcon: Icon(Icons.search),
+                          ),
+                        ),
+                      ),
+                      Card(
+                        
+                      )
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
