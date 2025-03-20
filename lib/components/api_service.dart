@@ -82,6 +82,7 @@ Future<String> loginUser(
     );
     return "Login berhasil!";
   } else {
+    print(response.statusCode);
     return "Login gagal! Periksa email dan password.";
   }
 }
