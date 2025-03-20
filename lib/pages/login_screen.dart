@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-import 'api_service.dart';
-import 'login_screen.dart';
+import '../components/api_service.dart';
+import 'register_screen.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _RegisterScreenState createState() => _RegisterScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController usernameController = TextEditingController();
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String message = '';
 
-  void handleRegister() async {
-    String response = await registerUser(
-      usernameController.text,
-      passwordController.text,
+  void handleLogin() async {
+    String response = await loginUser(
       emailController.text,
+      passwordController.text,
+      context
     );
 
     setState(() {
@@ -37,12 +36,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Register Page",
+              "Login Page",
               style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-            ),
-            TextField(
-              controller: usernameController,
-              decoration: InputDecoration(labelText: "Username"),
             ),
             TextField(
               controller: emailController,
@@ -55,18 +50,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             SizedBox(height: 10),
             Text(message),
-            SizedBox(height: 10),
-            ElevatedButton(onPressed: handleRegister, child: Text("Register")),
+            ElevatedButton(onPressed: handleLogin, child: Text("Login")),
             SizedBox(height: 10),
             InkWell(
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  MaterialPageRoute(builder: (context) => RegisterScreen()),
                 );
               },
               child: Text(
-                "Sudah Punya Akun?, Login Disini",
+                "Belum Punya Akun?, Daftar Disini",
                 style: TextStyle(decoration: TextDecoration.underline),
               ),
             ),

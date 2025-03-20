@@ -1,28 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'home_page.dart';
+import '../pages/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ymemo_app/models/note_class.dart';
 
-// ignore: constant_identifier_names
-const String API_URL = 'https://backend-catatan-production.up.railway.app';
+const String url = 'https://backend-catatan-production.up.railway.app';
 
-//note class
-class Note {
-  final int? id;
-  final String title;
-  final String body;
-
-  Note({this.id, required this.title, required this.body});
-
-  factory Note.fromJson(Map<String, dynamic> json) {
-    return Note(id: json['id'], title: json['title'], body: json['body']);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'title': title, 'body': body};
-  }
-}
 
 // Token Storage
 Future<void> saveToken(String token) async {
@@ -42,7 +26,7 @@ Future<String> registerUser(
   String email,
 ) async {
   final response = await http.post(
-    Uri.parse('$API_URL/api/register'),
+    Uri.parse('$url/api/register'),
     headers: {"Content-Type": "application/json"},
     body: jsonEncode({
       "username": username,
@@ -67,7 +51,7 @@ Future<String> loginUser(
   BuildContext context,
 ) async {
   final response = await http.post(
-    Uri.parse('$API_URL/api/login'),
+    Uri.parse('$url/api/login'),
     headers: {"Content-Type": "application/json"},
     body: jsonEncode({"email": email, "password": password}),
   );
@@ -76,7 +60,6 @@ Future<String> loginUser(
     final token = await getToken();
     print(token);
     Navigator.push(
-      // ignore: use_build_context_synchronously
       context,
       MaterialPageRoute(builder: (context) => HomeScreen()),
     );
@@ -91,7 +74,7 @@ Future<String> loginUser(
 Future<List<Note>> fetchNotes() async {
   final token = await getToken();
   final response = await http.get(
-    Uri.parse("$API_URL/api/notes"),
+    Uri.parse("$url/api/notes"),
     headers: {
       "Content-Type": "application/json",
       "Authorization": "Bearer $token",
