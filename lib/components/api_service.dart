@@ -74,7 +74,7 @@ Future<void> saveToken(String token) async {
 Future<String?> getToken() async {
   final prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('auth_token');
-  print("Token diambil: $token"); // Debug
+  print("Token diambil: $token");
   return token;
 }
 
@@ -100,6 +100,40 @@ class ApiService {
     } else {
       print(response);
       throw (response.statusCode);
+    }
+  }
+
+  // Add notes
+  static Future<void> createNotes(String title, String body) async {
+    final token = await getToken();
+    final response = await http.post(
+      Uri.parse("$url/api/add/notes"),
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode({"title": title, "body": body}),
+    );
+
+    if (response.statusCode == 200) {
+      print("Note berhasil ditambahkan");
+    } else {
+      print(response.statusCode);
+    }
+  }
+
+  // Delete Notes
+  static Future<void> deleteNotes(int id) async {
+    final token = await getToken();
+    final response = await http.delete(
+      Uri.parse("$url/api/delete/notes/$id"),
+      headers: {"Authorization": "Bearer $token"},
+    );
+
+    if (response.statusCode == 200) {
+      print("Note has ben deleted");
+    } else {
+      print(response.statusCode);
     }
   }
 }

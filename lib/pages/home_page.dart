@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'note_screen.dart';
+import 'create_note.dart';
 import 'package:ymemo_app/components/api_service.dart';
 import 'package:ymemo_app/models/note_class.dart';
 
@@ -18,12 +16,16 @@ class _homeScreen extends State<HomeScreen> {
   bool loading = true;
 
   void fetchNotes() async {
-    loading = true;
+    setState(() {
+      loading = true;
+    });
+
     final result = await ApiService.getNotes();
-    final finalResult = jsonEncode(result);
-    final note = finalResult;
-    print(note);
-    loading = false;
+
+    setState(() {
+      note = result;
+      loading = false;
+    });
   }
 
   @override
@@ -111,21 +113,59 @@ class _homeScreen extends State<HomeScreen> {
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: ListView.builder(
-                itemCount: note.length,
-                itemBuilder: (context, index) {
-                  final item = note[index];
-                  return ListTile(
-                    title: Text(item.title ?? "Tanpa Judul"),
-                    subtitle: Text(item.body ?? "Tanpa Isi"),
-                  );
-                },
-              ),
-            ),
+            loading
+                ? const Center(
+                  child: CircularProgressIndicator(color: Colors.blue),
+                )
+                : Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: ListView.builder(
+                      itemCount: note.length,
+                      itemBuilder: (context, index) {
+                        final item = note[index];
+                        return Card(
+                          clipBehavior: Clip.hardEdge,
+                          child: InkWell(
+                            splashColor: Colors.blue.withAlpha(30),
+                            onTap: () {
+                              debugPrint("Card Tap");
+                            },
+                            child: ListTile(
+                              title: Text(
+                                item.title ?? 'Tanpa Judul',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                item.body ?? 'Tanpa Isi',
+                                maxLines: 2,
+                              ),
+                              trailing: IconButton(
+                                onPressed: () async {
+                                  await ApiService.deleteNotes(item.id!);
+                                  fetchNotes();
+                                },
+                                icon: Icon(Icons.delete),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const NotePages()),
+          );
+        },
+        backgroundColor: Colors.blue,
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
