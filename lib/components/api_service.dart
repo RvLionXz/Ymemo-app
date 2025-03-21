@@ -7,18 +7,6 @@ import 'package:ymemo_app/models/note_class.dart';
 
 const String url = 'https://backend-catatan-production.up.railway.app';
 
-
-// Token Storage
-Future<void> saveToken(String token) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('auth_token', token);
-}
-
-Future<String?> getToken() async {
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getString('auth_token');
-}
-
 // Register
 Future<String> registerUser(
   String username,
@@ -57,35 +45,61 @@ Future<String> loginUser(
   );
 
   if (response.statusCode == 200) {
-    final token = await getToken();
+    Map<String, dynamic> responseData = jsonDecode(response.body);
+    String token = responseData['token'];
     print(token);
+
+    await saveToken(token);
+
+    print("Token : $token");
+
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => HomeScreen()),
     );
     return "Login berhasil!";
   } else {
-    print(response.statusCode);
+    print("Error ${response.statusCode}: ${response.body}");
     return "Login gagal! Periksa email dan password.";
   }
 }
 
+// Token Storage
+Future<void> saveToken(String token) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('auth_token', token);
+}
+
+// Ambil Token
+Future<String?> getToken() async {
+  final prefs = await SharedPreferences.getInstance();
+  String? token = prefs.getString('auth_token');
+  print("Token diambil: $token"); // Debug
+  return token;
+}
+
 //Get notes
-Future<List<Note>> fetchNotes() async {
-  final token = await getToken();
-  final response = await http.get(
-    Uri.parse("$url/api/notes"),
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer $token",
-    },
-  );
+class ApiService {
+  static Future<List<Note>> getNotes() async {
+    final token = await getToken();
+    final response = await http.get(
+      Uri.parse("$url/api/notes"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
 
     if (response.statusCode == 200) {
-    List jsonResponse = json.decode(response.body);
-    print(jsonResponse);
-    return jsonResponse.map((note) => Note.fromJson(note)).toList();
-  } else {
-    throw Exception('Gagal Menampilkan Notes');
+      Map<String, dynamic> jsonResponse = json.decode(response.body);
+      List<dynamic> jsonData = jsonResponse["data"];
+      List<Note> posts = jsonData.map((data) => Note.fromJson(data)).toList();
+      print(posts);
+      print("Data berhasil di ambil");
+      return posts;
+    } else {
+      print(response);
+      throw (response.statusCode);
+    }
   }
 }
