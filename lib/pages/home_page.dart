@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ymemo_app/pages/about.dart';
 import 'create_note.dart';
 import 'package:ymemo_app/components/api_service.dart';
 import 'package:ymemo_app/models/note_class.dart';
@@ -81,11 +82,12 @@ class _homeScreen extends State<HomeScreen> {
                             ),
                             Container(
                               alignment: Alignment.topRight,
-                              child: Icon(
-                                Icons.info,
-                                color: Colors.white,
-                                size: 30,
-                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const aboutPages()));
+                                },
+                                child: Icon(Icons.info, color: Colors.white, size: 30,),
+                              )
                             ),
                           ],
                         ),
