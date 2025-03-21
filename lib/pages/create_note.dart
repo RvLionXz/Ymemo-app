@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'package:ymemo_app/components/api_service.dart';
-import 'package:ymemo_app/models/note_class.dart';
 
 class NotePages extends StatefulWidget {
   const NotePages({super.key});
