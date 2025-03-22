@@ -1,35 +1,28 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'package:ymemo_app/components/api_service.dart';
+import 'package:ymemo_app/models/note_class.dart';
 
-class NotePages extends StatefulWidget {
-  const NotePages({super.key});
+class EditPages extends StatefulWidget {
+  final Note note;
+
+  const EditPages({super.key, required this.note});
 
   @override
-  State<NotePages> createState() => _NotePagesState();
+  State<EditPages> createState() => _EditPagesState();
 }
 
-class _NotePagesState extends State<NotePages> {
+class _EditPagesState extends State<EditPages> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
 
-  void saveNote() {
-    setState(() {
-      final title = _titleController.text;
-      final body = _contentController.text;
+  Note? note;
 
-      if (title.isNotEmpty && body.isNotEmpty) {
-        ApiService.createNotes(title, body).then((_) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
-          );
-        });
-        print("Title: $title, Content: $body");
-      } else {
-        print("Title or content cannot be empty");
-      }
-    });
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    note ??= ModalRoute.of(context)?.settings.arguments as Note?;
   }
 
   @override
@@ -46,7 +39,7 @@ class _NotePagesState extends State<NotePages> {
             },
           ),
           title: Text(
-            "Add Note",
+            "Edit Note",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.blueAccent,
@@ -79,7 +72,7 @@ class _NotePagesState extends State<NotePages> {
           ),
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: (saveNote),
+          onPressed: () async {},
           label: Text("Save Note", style: TextStyle(color: Colors.white)),
           icon: Icon(Icons.save, color: Colors.white),
           backgroundColor: Colors.blueAccent,

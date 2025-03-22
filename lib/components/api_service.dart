@@ -122,6 +122,21 @@ class ApiService {
     }
   }
 
+  // Update Notes
+  static Future<void> updateNotes(int id) async {
+    final token = await getToken();
+    final response = await http.put(
+      Uri.parse("$url/api/update/notes/$id"),
+      headers: {"Authorization": "Bearer $token"},
+    );
+
+    if (response.statusCode == 200) {
+      print("Note sudah di update");
+    }else {
+      print("note gagal di update");
+    }
+  }
+
   // Delete Notes
   static Future<void> deleteNotes(int id) async {
     final token = await getToken();
