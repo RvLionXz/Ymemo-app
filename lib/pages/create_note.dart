@@ -12,24 +12,34 @@ class NotePages extends StatefulWidget {
 class _NotePagesState extends State<NotePages> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
+  bool isButtonPress = false;
 
-  void saveNote() {
+  void saveNote() async {
+    if (isButtonPress) return;
+
     setState(() {
-      final title = _titleController.text;
-      final body = _contentController.text;
+      isButtonPress = true;
+    });
 
-      if (title.isNotEmpty && body.isNotEmpty) {
-        ApiService.createNotes(title, body).then((_) {
+    final title = _titleController.text;
+    final body = _contentController.text;
+
+    if (title.isNotEmpty && body.isNotEmpty) {
+      ApiService.createNotes(title, body).then((_) {
+        if (mounted) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const HomeScreen()),
           );
-        });
-        print("Title: $title, Content: $body");
-      } else {
-        print("Title or content cannot be empty");
-      }
-    });
+          setState(() {
+            isButtonPress = false;
+          });
+        }
+      });
+      print("Title: $title, Content: $body");
+    } else {
+      print("Title or content cannot be empty");
+    }
   }
 
   @override
@@ -79,8 +89,11 @@ class _NotePagesState extends State<NotePages> {
           ),
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: (saveNote),
-          label: Text("Save Note", style: TextStyle(color: Colors.white)),
+          onPressed: isButtonPress ? null : saveNote,
+          label: Text(
+            isButtonPress ? "Saving.." : "Save Note",
+            style: TextStyle(color: Colors.white),
+          ),
           icon: Icon(Icons.save, color: Colors.white),
           backgroundColor: Colors.blueAccent,
         ),

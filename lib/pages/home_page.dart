@@ -17,7 +17,9 @@ class _homeScreen extends State<HomeScreen> {
   List<Note> note = [];
   bool loading = true;
   String username = "";
+  bool isButtonPress = false;
 
+  //get notes method
   void fetchNotes() async {
     setState(() {
       loading = true;
@@ -31,6 +33,7 @@ class _homeScreen extends State<HomeScreen> {
     });
   }
 
+  // get Username Method
   void getUsername() async {
     final userdata = await UserData.getUserData();
     setState(() {
@@ -184,8 +187,15 @@ class _homeScreen extends State<HomeScreen> {
                                   ),
                                   trailing: IconButton(
                                     onPressed: () async {
+                                      if (isButtonPress) return;
+                                      setState(() {
+                                        isButtonPress = true;
+                                      });
                                       await ApiService.deleteNotes(item.id!);
                                       fetchNotes();
+                                      setState(() {
+                                        isButtonPress = false;
+                                      });
                                     },
                                     icon: Icon(Icons.delete),
                                   ),
