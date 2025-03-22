@@ -13,16 +13,14 @@ class EditPages extends StatefulWidget {
 }
 
 class _EditPagesState extends State<EditPages> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _contentController = TextEditingController();
-
-  Note? note;
+  late TextEditingController _titleController = TextEditingController();
+  late TextEditingController _contentController = TextEditingController();
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    note ??= ModalRoute.of(context)?.settings.arguments as Note?;
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.note.title);
+    _contentController = TextEditingController(text: widget.note.body);
   }
 
   @override
@@ -72,8 +70,18 @@ class _EditPagesState extends State<EditPages> {
           ),
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () async {},
-          label: Text("Save Note", style: TextStyle(color: Colors.white)),
+          onPressed: () async {
+            await ApiService.updateNotes(
+              widget.note.id!,
+              _titleController.text,
+              _contentController.text,
+            );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          },
+          label: Text("Save Changes", style: TextStyle(color: Colors.white)),
           icon: Icon(Icons.save, color: Colors.white),
           backgroundColor: Colors.blueAccent,
         ),

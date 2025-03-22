@@ -47,11 +47,11 @@ Future<String> loginUser(
   if (response.statusCode == 200) {
     Map<String, dynamic> responseData = jsonDecode(response.body);
     String token = responseData['token'];
-    print(token);
+    String username = responseData['username'];
 
     await saveToken(token);
+    await saveUserData(username);
 
-    print("Token : $token");
 
     Navigator.push(
       context,
@@ -61,6 +61,21 @@ Future<String> loginUser(
   } else {
     print("Error ${response.statusCode}: ${response.body}");
     return "Login gagal! Periksa email dan password.";
+  }
+}
+
+// User data storage
+
+Future<void> saveUserData(String username) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('username', username);
+}
+
+class UserData {
+  static Future<String?> getUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('username');
+    return username;
   }
 }
 
@@ -123,17 +138,19 @@ class ApiService {
   }
 
   // Update Notes
-  static Future<void> updateNotes(int id) async {
+  static Future<void> updateNotes(int id, String title, String body) async {
     final token = await getToken();
     final response = await http.put(
       Uri.parse("$url/api/update/notes/$id"),
       headers: {"Authorization": "Bearer $token"},
+      body: jsonEncode({"title": title, "body": body}),
     );
 
     if (response.statusCode == 200) {
       print("Note sudah di update");
-    }else {
-      print("note gagal di update");
+    } else {
+      var debug = response.statusCode;
+      print("note gagal di update, status code $debug");
     }
   }
 

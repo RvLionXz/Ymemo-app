@@ -16,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _homeScreen extends State<HomeScreen> {
   List<Note> note = [];
   bool loading = true;
+  String username = "";
 
   void fetchNotes() async {
     setState(() {
@@ -30,10 +31,18 @@ class _homeScreen extends State<HomeScreen> {
     });
   }
 
+  void getUsername() async {
+    final userdata = await UserData.getUserData();
+    setState(() {
+      username = userdata ?? "Guest";
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     fetchNotes();
+    getUsername();
   }
 
   @override
@@ -65,7 +74,7 @@ class _homeScreen extends State<HomeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Hello User",
+                                    "Hello $username",
                                     style: TextStyle(
                                       fontSize: 30,
                                       fontWeight: FontWeight.bold,
@@ -154,7 +163,13 @@ class _homeScreen extends State<HomeScreen> {
                               child: InkWell(
                                 splashColor: Colors.blue.withAlpha(30),
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => EditPages(note: item,)));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => EditPages(note: item),
+                                    ),
+                                  );
                                 },
                                 child: ListTile(
                                   title: Text(
