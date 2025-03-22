@@ -17,10 +17,29 @@ class _EditPagesState extends State<EditPages> {
   late TextEditingController _contentController = TextEditingController();
 
   @override
+  @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController(text: widget.note.title);
-    _contentController = TextEditingController(text: widget.note.body);
+    _titleController = TextEditingController(text: widget.note.title ?? "");
+    _contentController = TextEditingController(text: widget.note.body ?? "");
+    print(
+      "DEBUGGING INITSTATE: title=${widget.note.title}, body=${widget.note.body}",
+    );
+  }
+
+  void updateNotes() async {
+    await ApiService.updateNotes(
+      widget.note.id!,
+      _titleController.text,
+      _contentController.text,
+    );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const HomeScreen()),
+    );
+    print(
+      "DEBUGGING NOTE DATA: title=${widget.note.title}, body=${widget.note.body}",
+    );
   }
 
   @override
@@ -70,17 +89,7 @@ class _EditPagesState extends State<EditPages> {
           ),
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () async {
-            await ApiService.updateNotes(
-              widget.note.id!,
-              _titleController.text,
-              _contentController.text,
-            );
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()),
-            );
-          },
+          onPressed: (updateNotes),
           label: Text("Save Changes", style: TextStyle(color: Colors.white)),
           icon: Icon(Icons.save, color: Colors.white),
           backgroundColor: Colors.blueAccent,

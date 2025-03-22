@@ -52,7 +52,6 @@ Future<String> loginUser(
     await saveToken(token);
     await saveUserData(username);
 
-
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -140,9 +139,12 @@ class ApiService {
   // Update Notes
   static Future<void> updateNotes(int id, String title, String body) async {
     final token = await getToken();
-    final response = await http.put(
+    final response = await http.patch(
       Uri.parse("$url/api/update/notes/$id"),
-      headers: {"Authorization": "Bearer $token"},
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
+      },
       body: jsonEncode({"title": title, "body": body}),
     );
 
