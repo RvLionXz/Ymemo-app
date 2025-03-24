@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ymemo_app/pages/about.dart';
 import 'create_note.dart';
 import 'package:ymemo_app/components/api_service.dart';
 import 'package:ymemo_app/models/note_class.dart';
 import 'edit_note.dart';
+import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -100,18 +100,18 @@ class _homeScreen extends State<HomeScreen> {
                                 alignment: Alignment.topRight,
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
+                                    Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                         builder:
-                                            (context) => const aboutPages(),
+                                            (context) => const LoginScreen(),
                                       ),
                                     );
                                   },
                                   child: Icon(
-                                    Icons.info,
+                                    Icons.logout,
                                     color: Colors.white,
-                                    size: 30,
+                                    size: 35,
                                   ),
                                 ),
                               ),

@@ -52,7 +52,7 @@ Future<String> loginUser(
     await saveToken(token);
     await saveUserData(username);
 
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => HomeScreen()),
     );
@@ -64,7 +64,6 @@ Future<String> loginUser(
 }
 
 // User data storage
-
 Future<void> saveUserData(String username) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('username', username);
@@ -90,6 +89,20 @@ Future<String?> getToken() async {
   String? token = prefs.getString('auth_token');
   print("Token diambil: $token");
   return token;
+}
+
+class StatusUser {
+  // save login status
+  Future<void> saveLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', true);
+  }
+
+  // clear login status
+  Future<void> logOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
 }
 
 //Get notes
