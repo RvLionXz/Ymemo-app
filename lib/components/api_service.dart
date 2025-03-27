@@ -87,7 +87,7 @@ Future<void> saveToken(String token) async {
 Future<String?> getToken() async {
   final prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('auth_token');
-  print("Token diambil: $token");
+  print("$token");
   return token;
 }
 
